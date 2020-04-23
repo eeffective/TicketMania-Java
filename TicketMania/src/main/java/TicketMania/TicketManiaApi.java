@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TicketManiaApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(TicketManiaApplication.class, args);
-	}
-
+public class TicketManiaApi {
+    public static void main(String[] args) {
+        SpringApplication.run(TicketManiaApi.class, args);
+    }
 }
+
