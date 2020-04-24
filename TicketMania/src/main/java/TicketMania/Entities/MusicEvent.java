@@ -1,4 +1,4 @@
-package TicketMania.Models;
+package TicketMania.Entities;
 
 import javax.persistence.*;
 import java.util.Date;
