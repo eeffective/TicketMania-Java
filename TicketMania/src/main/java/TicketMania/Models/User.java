@@ -18,13 +18,16 @@ public class User {
     private String firstName;
     @Column(name = "lastname")
     private String lastName;
+    @Column(name = "role")
+    private Integer role;
 
-    public User(Long id, String username, String password, String firstName, String lastName) {
+    public User(Long id, String username, String password, String firstName, String lastName, Integer role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role;
     }
 
     public User() {
@@ -68,5 +71,13 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getRole() {
+        return role;
+    }
+
+    public void setRole(Integer role) {
+        this.role = role;
     }
 }
