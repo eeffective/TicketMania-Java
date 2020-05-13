@@ -17,20 +17,41 @@ public class MusicEventService {
         this.musicEventRepository = musicEventRepository;
     }
 
-    public void create(MusicEvent musicEvent){
+    public void save(MusicEvent musicEvent) {
         try {
             musicEventRepository.save(musicEvent);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public Collection<MusicEvent> getAll(){
-        return musicEventRepository.findAll();
+
+    public Collection<MusicEvent> getAll() {
+        try {
+            return musicEventRepository.findAll();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
     }
 
-    public MusicEvent getById(Long id){
-        return musicEventRepository.findById(id).get();
+    public MusicEvent getById(Long id) {
+        try {
+            return musicEventRepository.findById(id).get();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public MusicEvent getByGenre(String genre){
+        try {
+            return musicEventRepository.findByGenre(genre);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
     }
 }

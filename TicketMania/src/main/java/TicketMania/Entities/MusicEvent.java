@@ -2,6 +2,8 @@ package TicketMania.Entities;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "musicevents")
@@ -23,6 +25,14 @@ public class MusicEvent {
     private Integer duration;
     @Column(name = "datetime")
     private Date dateTime;
+    @ManyToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(name = "musicevent_musicartist",
+            joinColumns = @JoinColumn(name = "musicevent_id"),
+            inverseJoinColumns = @JoinColumn(name = "musicartist_id"))
+    private Set<MusicArtist> musicArtists = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "musicevent_id")
+    private Set<Ticket> tickets = new HashSet<>();
 
     public MusicEvent(Long id, String name, String description, String location, String genre, Integer duration, Date dateTime) {
         this.id = id;
@@ -35,6 +45,22 @@ public class MusicEvent {
     }
 
     public MusicEvent() {
+    }
+
+    public Set<MusicArtist> getMusicArtists() {
+        return musicArtists;
+    }
+
+    public void setMusicArtists(Set<MusicArtist> musicArtists) {
+        this.musicArtists = musicArtists;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Set<Ticket> tickets) {
+        this.tickets = tickets;
     }
 
     public Long getId() {

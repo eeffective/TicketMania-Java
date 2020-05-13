@@ -1,11 +1,50 @@
 package TicketMania.Controllers;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import TicketMania.Entities.MusicArtist;
+import TicketMania.Entities.MusicEvent;
+import TicketMania.Services.MusicArtistService;
+import TicketMania.Services.MusicEventService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping(path = "/musicartists")
 public class MusicArtistController {
+
+    @Autowired
+    private final MusicArtistService musicArtistService;
+
+    public MusicArtistController(MusicArtistService musicArtistService) {
+        this.musicArtistService = musicArtistService;
+    }
+
+    @GetMapping
+    public Collection<MusicArtist> getAll() {
+        return this.musicArtistService.getAll();
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<MusicArtist> get(@PathVariable Long id) {
+        try {
+            MusicArtist musicArtist = musicArtistService.getById(id);
+            return new ResponseEntity<MusicArtist>(musicArtist, HttpStatus.OK);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<MusicArtist> add(@RequestBody MusicArtist musicArtist) {
+        try {
+            musicArtistService.save(musicArtist);
+            return new ResponseEntity<MusicArtist>(musicArtist, HttpStatus.OK);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 }

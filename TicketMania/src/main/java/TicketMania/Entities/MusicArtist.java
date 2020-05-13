@@ -1,6 +1,10 @@
 package TicketMania.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "musicartists")
@@ -16,6 +20,9 @@ public class MusicArtist {
     private String biography;
     @Column(name = "genre")
     private String genre;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "musicArtists")
+    private Set<MusicEvent> events = new HashSet<>();
 
     public MusicArtist() {
     }

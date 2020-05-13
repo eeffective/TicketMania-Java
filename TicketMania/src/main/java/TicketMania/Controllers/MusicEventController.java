@@ -36,13 +36,38 @@ public class MusicEventController {
         }
     }
 
+   /* @GetMapping(path = "/{genre}")
+    public ResponseEntity<MusicEvent> get(@RequestParam(name = "genre") String genre){
+        try {
+            MusicEvent musicEvent = musicEventService.getByGenre(genre);
+            return new ResponseEntity<MusicEvent>(musicEvent, HttpStatus.OK);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }*/
+
     @PostMapping
     public ResponseEntity<MusicEvent> add(@RequestBody MusicEvent musicEvent) {
         try {
-            musicEventService.create(musicEvent);
+            musicEventService.save(musicEvent);
             return new ResponseEntity<MusicEvent>(musicEvent, HttpStatus.OK);
         } catch (Exception ex) {
             throw ex;
         }
     }
+
+    // Adding artists/tickets with this specific update method only works if there are artists/tickets available in the database
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<MusicEvent> update(@RequestBody MusicEvent musicEvent, @PathVariable Long id) {
+        try {
+            if (musicEventService.getById(id) != null) {
+                musicEventService.save(musicEvent);
+            }
+            return new ResponseEntity<MusicEvent>(musicEvent, HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
 }
