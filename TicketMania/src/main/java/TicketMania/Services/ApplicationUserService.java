@@ -1,7 +1,7 @@
 package TicketMania.Services;
 
-import TicketMania.Entities.User;
-import TicketMania.Repositories.UserRepository;
+import TicketMania.Entities.ApplicationUser;
+import TicketMania.Repositories.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class UserService {
+public class ApplicationUserService {
 
-    private final UserRepository userRepository;
+    private final ApplicationUserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public ApplicationUserService(ApplicationUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -23,15 +23,15 @@ public class UserService {
         return new BCryptPasswordEncoder();
     }
 
-    public User findByEmail(String email) {
+    public ApplicationUser findByEmail(String email) {
         return this.userRepository.findByEmail(email);
     }
 
-    public User findByFirstNameAndLastName(String firstName, String lastName) {
+    public ApplicationUser findByFirstNameAndLastName(String firstName, String lastName) {
         return this.userRepository.findByFirstNameAndLastName(firstName, lastName);
     }
 
-    public void create(User user) {
+    public void create(ApplicationUser user) {
         try {
             this.userRepository.save(user);
         } catch (Exception ex) {

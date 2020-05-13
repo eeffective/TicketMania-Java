@@ -1,31 +1,28 @@
 package TicketMania.Controllers;
 
-import TicketMania.Entities.User;
-import TicketMania.Models.UserLoginModel;
-import TicketMania.Models.UserRegistrationModel;
-import TicketMania.Services.UserService;
-import TicketMania.Utilities.CustomResponse;
+import TicketMania.Entities.ApplicationUser;
+import TicketMania.Services.ApplicationUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import javax.validation.Valid;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
 @RequestMapping(path = "/authenticate")
-public class UserController {
+public class ApplicationUserController {
     @Autowired
-    private final UserService userService;
+    private final ApplicationUserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public ApplicationUserController(ApplicationUserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    @PostMapping("/register")
+    public void signUp(@RequestBody ApplicationUser user){
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userService.create(user);
     }
 
 

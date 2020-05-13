@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class ApplicationUser {
     // TODO: Add a profile picture property
     @Id
     @Column(name = "id")
@@ -21,7 +21,7 @@ public class User {
     @Column(name = "role")
     private Integer role;
 
-    public User(Long id, String email, String password, String firstName, String lastName, Integer role) {
+    public ApplicationUser(Long id, String email, String password, String firstName, String lastName, Integer role) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -30,7 +30,7 @@ public class User {
         this.role = role;
     }
 
-    public User() {
+    public ApplicationUser() {
     }
 
     public Long getId() {
