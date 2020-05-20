@@ -1,10 +1,12 @@
 package TicketMania.Entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class ApplicationUser {
+public class User {
     // TODO: Add a profile picture property
     @Id
     @Column(name = "id")
@@ -12,25 +14,37 @@ public class ApplicationUser {
     private Long id;
     @Column(name = "email")
     private String email;
+    @Column(name = "username")
+    private String username;
     @Column(name = "password")
     private String password;
     @Column(name = "firstname")
     private String firstName;
     @Column(name = "lastname")
     private String lastName;
-    @Column(name = "role")
-    private Integer role;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    public ApplicationUser(Long id, String email, String password, String firstName, String lastName, Integer role) {
-        this.id = id;
+    public User(String username, String email, String password, String firstName, String lastName) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.role = role;
     }
 
-    public ApplicationUser() {
+    public User() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Long getId() {
@@ -73,11 +87,11 @@ public class ApplicationUser {
         this.lastName = lastName;
     }
 
-    public Integer getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Integer role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

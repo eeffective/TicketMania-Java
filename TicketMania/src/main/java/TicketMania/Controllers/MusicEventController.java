@@ -11,7 +11,7 @@ import java.util.Collection;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
-@RequestMapping(path = "/musicevents")
+@RequestMapping(path = "/api")
 public class MusicEventController {
 
     @Autowired
@@ -22,11 +22,16 @@ public class MusicEventController {
     }
 
     @GetMapping
+    public String Hello(){
+        return "Hello World";
+    }
+
+    @GetMapping(path = "/musicevents")
     public Collection<MusicEvent> getAll() {
         return this.musicEventService.getAll();
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "musicevents/{id}")
     public ResponseEntity<MusicEvent> get(@PathVariable Long id) {
         try {
             MusicEvent musicEvent = musicEventService.getById(id);

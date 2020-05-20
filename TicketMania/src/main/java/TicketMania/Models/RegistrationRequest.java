@@ -1,18 +1,22 @@
 package TicketMania.Models;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
-public class UserRegistrationModel {
-    @NotEmpty(message = "First name can't be empty.")
+public class RegistrationRequest {
     private String firstName;
-    @NotEmpty(message = "Last name can't be empty.")
     private String lastName;
-    @NotEmpty(message = "Email can't be empty.")
-    @Email(message = "Invalid email.")
+    private String username;
     private String email;
-    @NotEmpty(message = "Password can't be empty.")
     private String password;
+    private Set<String> roles;
+
+    public Set<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<String> roles) {
+        this.roles = roles;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -44,5 +48,13 @@ public class UserRegistrationModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
