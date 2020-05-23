@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @RestController
 @CrossOrigin("http://localhost:4200")
-@RequestMapping(path = "/musicartists")
+@RequestMapping(path = "/api")
 public class MusicArtistController {
 
     @Autowired
@@ -23,12 +23,12 @@ public class MusicArtistController {
         this.musicArtistService = musicArtistService;
     }
 
-    @GetMapping
+    @GetMapping(path = "/musicartists")
     public Collection<MusicArtist> getAll() {
         return this.musicArtistService.getAll();
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/musicartists/{id}")
     public ResponseEntity<MusicArtist> get(@PathVariable Long id) {
         try {
             MusicArtist musicArtist = musicArtistService.getById(id);
@@ -38,7 +38,7 @@ public class MusicArtistController {
         }
     }
 
-    @PostMapping
+    @PostMapping(path = "/musicartists")
     public ResponseEntity<MusicArtist> add(@RequestBody MusicArtist musicArtist) {
         try {
             musicArtistService.save(musicArtist);

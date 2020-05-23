@@ -31,7 +31,7 @@ public class MusicEventController {
         return this.musicEventService.getAll();
     }
 
-    @GetMapping(path = "musicevents/{id}")
+    @GetMapping(path = "/musicevents/{id}")
     public ResponseEntity<MusicEvent> get(@PathVariable Long id) {
         try {
             MusicEvent musicEvent = musicEventService.getById(id);
@@ -51,7 +51,7 @@ public class MusicEventController {
         }
     }*/
 
-    @PostMapping
+    @PostMapping(path = "/musicevents")
     public ResponseEntity<MusicEvent> add(@RequestBody MusicEvent musicEvent) {
         try {
             musicEventService.save(musicEvent);
@@ -62,7 +62,7 @@ public class MusicEventController {
     }
 
     // Adding artists/tickets with this specific update method only works if there are artists/tickets available in the database
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = "/musicevents/{id}")
     public ResponseEntity<MusicEvent> update(@RequestBody MusicEvent musicEvent, @PathVariable Long id) {
         try {
             if (musicEventService.getById(id) != null) {
