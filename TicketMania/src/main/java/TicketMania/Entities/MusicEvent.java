@@ -1,9 +1,9 @@
 package TicketMania.Entities;
 
+import TicketMania.Entities.Utilities.MusicEventTicket;
+
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "musicevents")
@@ -30,9 +30,8 @@ public class MusicEvent {
             joinColumns = @JoinColumn(name = "musicevent_id"),
             inverseJoinColumns = @JoinColumn(name = "musicartist_id"))
     private Set<MusicArtist> musicArtists = new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "musicevent_id")
-    private Set<Ticket> tickets = new HashSet<>();
+    @OneToMany(mappedBy = "musicEvent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<MusicEventTicket> tickets = new HashSet<>();
 
     public MusicEvent(Long id, String name, String description, String location, String genre, Integer duration, Date dateTime) {
         this.id = id;
@@ -47,20 +46,61 @@ public class MusicEvent {
     public MusicEvent() {
     }
 
+    public void addTicket(Ticket ticket){
+        MusicEventTicket musicEventTicket = new MusicEventTicket(this, ticket);
+        tickets.add(musicEventTicket);
+        ticket.getMusicEvents().add(musicEventTicket);
+    }
+
+    public void removeTicket(Ticket ticket){
+        for (Iterator<MusicEventTicket> iterator = tickets.iterator();
+        iterator.hasNext();){
+            MusicEventTicket musicEventTicket = iterator.next();
+
+            if (musicEventTicket.getMusicEvent().equals(this) &&
+            musicEventTicket.getTicket().equals(ticket)) {
+                iterator.remove();
+                musicEventTicket.getTicket().getMusicEvents().remove(musicEventTicket);
+                musicEventTicket.setMusicEvent(null);
+                musicEventTicket.setTicket(null);
+            }
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+
+        MusicEvent musicEvent = (MusicEvent) obj;
+        return Objects.equals(name, musicEvent.name) &&
+                Objects.equals(dateTime, musicEvent.dateTime) &&
+                Objects.equals(duration, musicEvent.duration) &&
+                Objects.equals(genre, musicEvent.genre) &&
+                Objects.equals(description, musicEvent.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    public Set<MusicEventTicket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(Set<MusicEventTicket> tickets) {
+        this.tickets = tickets;
+    }
+
     public Set<MusicArtist> getMusicArtists() {
         return musicArtists;
     }
 
     public void setMusicArtists(Set<MusicArtist> musicArtists) {
         this.musicArtists = musicArtists;
-    }
-
-    public Set<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(Set<Ticket> tickets) {
-        this.tickets = tickets;
     }
 
     public Long getId() {
