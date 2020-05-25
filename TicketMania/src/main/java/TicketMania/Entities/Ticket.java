@@ -1,36 +1,29 @@
 package TicketMania.Entities;
 
-import TicketMania.Entities.Utilities.MusicEventTicket;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.NaturalIdCache;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "tickets")
-@NaturalIdCache
-@Cache(
-        usage = CacheConcurrencyStrategy.READ_WRITE
-)
 public class Ticket {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NaturalId
     @Column(name = "type")
     private String type;
-
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MusicEventTicket> musicEvents = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "ticket")
+    private Set<MusicEventTicket> musicEvents = new HashSet<MusicEventTicket>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "ticket", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<VisitedMusicEvent> visitedMusicEvents = new HashSet<>();
 
     public Ticket() {
     }
@@ -45,21 +38,6 @@ public class Ticket {
 
     public Ticket(String type){
         this.type = type;
-    }
-
-    @Override
-    public boolean equals(Object obj){
-        if (obj == null) return true;
-
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        Ticket ticket = (Ticket) obj;
-        return Objects.equals(type, ticket.type);
-    }
-
-    @Override
-    public int hashCode(){
-        return Objects.hash(type);
     }
 
     public Long getId() {

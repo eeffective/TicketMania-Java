@@ -20,4 +20,8 @@ public class TicketService {
     public Ticket findByType(String type) {
         return this.ticketRepo.findByType(type);
     }
+
+    public void save(Ticket ticket){
+        this.ticketRepo.save(ticket);
+    }
 }

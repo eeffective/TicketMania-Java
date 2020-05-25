@@ -1,6 +1,8 @@
 package TicketMania.Entities;
 
-import TicketMania.Entities.Utilities.MusicEventTicket;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.*;
@@ -31,7 +33,10 @@ public class MusicEvent {
             inverseJoinColumns = @JoinColumn(name = "musicartist_id"))
     private Set<MusicArtist> musicArtists = new HashSet<>();
     @OneToMany(mappedBy = "musicEvent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MusicEventTicket> tickets = new HashSet<>();
+    private Set<MusicEventTicket> tickets = new HashSet<MusicEventTicket>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "musicEvent", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<VisitedMusicEvent> visitedMusicEvents = new HashSet<>();
 
     public MusicEvent(Long id, String name, String description, String location, String genre, Integer duration, Date dateTime) {
         this.id = id;
@@ -44,47 +49,6 @@ public class MusicEvent {
     }
 
     public MusicEvent() {
-    }
-
-    public void addTicket(Ticket ticket){
-        MusicEventTicket musicEventTicket = new MusicEventTicket(this, ticket);
-        tickets.add(musicEventTicket);
-        ticket.getMusicEvents().add(musicEventTicket);
-    }
-
-    public void removeTicket(Ticket ticket){
-        for (Iterator<MusicEventTicket> iterator = tickets.iterator();
-        iterator.hasNext();){
-            MusicEventTicket musicEventTicket = iterator.next();
-
-            if (musicEventTicket.getMusicEvent().equals(this) &&
-            musicEventTicket.getTicket().equals(ticket)) {
-                iterator.remove();
-                musicEventTicket.getTicket().getMusicEvents().remove(musicEventTicket);
-                musicEventTicket.setMusicEvent(null);
-                musicEventTicket.setTicket(null);
-            }
-        }
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-
-        MusicEvent musicEvent = (MusicEvent) obj;
-        return Objects.equals(name, musicEvent.name) &&
-                Objects.equals(dateTime, musicEvent.dateTime) &&
-                Objects.equals(duration, musicEvent.duration) &&
-                Objects.equals(genre, musicEvent.genre) &&
-                Objects.equals(description, musicEvent.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
     }
 
     public Set<MusicEventTicket> getTickets() {

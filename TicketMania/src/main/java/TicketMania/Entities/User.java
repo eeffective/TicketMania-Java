@@ -27,6 +27,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<VisitedMusicEvent> visitedMusicEvents = new HashSet<>();
 
     public User(String username, String email, String password, String firstName, String lastName) {
         this.username = username;
