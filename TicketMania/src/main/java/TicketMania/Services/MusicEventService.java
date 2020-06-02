@@ -46,6 +46,15 @@ public class MusicEventService {
         }
     }
 
+    public MusicEvent getByLocation(String location) {
+        try {
+            return musicEventRepository.findByLocation(location);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
     public MusicEvent getByGenre(String genre){
         try {
             return musicEventRepository.findByGenre(genre);

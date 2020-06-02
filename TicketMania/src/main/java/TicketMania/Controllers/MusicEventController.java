@@ -25,18 +25,13 @@ public class MusicEventController {
         this.ticketService = ticketService;
     }
 
-    @GetMapping
-    public String Hello() {
-        return "Hello World";
-    }
-
     @GetMapping()
     public Collection<MusicEvent> getAll() {
         return this.musicEventService.getAll();
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<MusicEvent> get(@PathVariable Long id) {
+    public ResponseEntity<MusicEvent> getById(@PathVariable Long id) {
         try {
             MusicEvent musicEvent = musicEventService.getById(id);
             return new ResponseEntity<MusicEvent>(musicEvent, HttpStatus.OK);
@@ -45,15 +40,25 @@ public class MusicEventController {
         }
     }
 
-   /* @GetMapping(path = "/musicevents/genre{genre}")
-    public ResponseEntity<MusicEvent> get(@RequestParam(name = "genre") String genre){
+    @GetMapping(path = "/genre/{genre}")
+    public ResponseEntity<MusicEvent> getByGenre(@PathVariable String genre){
         try {
             MusicEvent musicEvent = musicEventService.getByGenre(genre);
             return new ResponseEntity<MusicEvent>(musicEvent, HttpStatus.OK);
         } catch (Exception ex) {
             throw ex;
         }
-    }*/
+    }
+
+    @GetMapping(path = "/location/{location}")
+    public ResponseEntity<MusicEvent> getBy(@PathVariable String location){
+        try {
+            MusicEvent musicEvent = musicEventService.getByLocation(location);
+            return new ResponseEntity<MusicEvent>(musicEvent, HttpStatus.OK);
+        } catch (Exception ex) {
+            throw ex;
+        }
+    }
 
     @PostMapping()
     public ResponseEntity<MusicEvent> add(@RequestBody MusicEvent musicEvent) {
