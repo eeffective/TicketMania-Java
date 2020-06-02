@@ -13,4 +13,9 @@ class TicketManiaApplicationTests {
 		assertEquals(1, 1);
 	}
 
+	@Test
+	void quickMaths2() {
+		assertEquals(2, 1 + 1);
+	}
+
 }
