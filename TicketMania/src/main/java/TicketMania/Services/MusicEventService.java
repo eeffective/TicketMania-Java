@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class MusicEventService {
@@ -26,7 +27,6 @@ public class MusicEventService {
         }
     }
 
-
     public Collection<MusicEvent> getAll() {
         try {
             return musicEventRepository.findAll();
@@ -37,16 +37,16 @@ public class MusicEventService {
         }
     }
 
-    public MusicEvent getById(Long id) {
+    public Optional<MusicEvent> getById(Long id) {
         try {
-            return musicEventRepository.findById(id).get();
+            return musicEventRepository.findById(id);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
-    public MusicEvent getByLocation(String location) {
+    public Collection<MusicEvent> getByLocation(String location) {
         try {
             return musicEventRepository.findByLocation(location);
         } catch (Exception ex) {
@@ -55,7 +55,16 @@ public class MusicEventService {
         }
     }
 
-    public MusicEvent getByGenre(String genre){
+    public Collection<MusicEvent> getByArtist(String artist) {
+        try {
+            return musicEventRepository.findByMusicArtists(artist);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw ex;
+        }
+    }
+
+    public Collection<MusicEvent> getByGenre(String genre){
         try {
             return musicEventRepository.findByGenre(genre);
         } catch (Exception ex) {

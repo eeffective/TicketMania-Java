@@ -1,18 +1,18 @@
 package TicketMania.Entities;
 
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "musicevents")
-public class MusicEvent {
+public class MusicEvent implements Serializable {
     // TODO: Add a image property
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "name")
@@ -32,11 +32,10 @@ public class MusicEvent {
             joinColumns = @JoinColumn(name = "musicevent_id"),
             inverseJoinColumns = @JoinColumn(name = "musicartist_id"))
     private Set<MusicArtist> musicArtists = new HashSet<>();
-    @OneToMany(mappedBy = "musicEvent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<MusicEventTicket> tickets = new HashSet<MusicEventTicket>();
-    @JsonIgnore
-    @OneToMany(mappedBy = "musicEvent", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<VisitedMusicEvent> visitedMusicEvents = new HashSet<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "musicEvent", cascade = CascadeType.ALL)
+    private Set<Ticket> tickets = new HashSet<>();
+
 
     public MusicEvent(Long id, String name, String description, String location, String genre, Integer duration, Date dateTime) {
         this.id = id;
@@ -51,13 +50,14 @@ public class MusicEvent {
     public MusicEvent() {
     }
 
-    public Set<MusicEventTicket> getTickets() {
+    public Set<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(Set<MusicEventTicket> tickets) {
+    public void setTickets(Set<Ticket> tickets) {
         this.tickets = tickets;
     }
+
 
     public Set<MusicArtist> getMusicArtists() {
         return musicArtists;

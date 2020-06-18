@@ -9,9 +9,9 @@ import java.util.Set;
 public class User {
     // TODO: Add a profile picture property
     @Id
-    @Column(name = "id")
+    @Column(name = "iduser")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long iduser;
     @Column(name = "email")
     private String email;
     @Column(name = "username")
@@ -27,8 +27,6 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<VisitedMusicEvent> visitedMusicEvents = new HashSet<>();
 
     public User(String username, String email, String password, String firstName, String lastName) {
         this.username = username;
@@ -49,12 +47,12 @@ public class User {
         this.username = username;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIduser() {
+        return iduser;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIduser(Long iduser) {
+        this.iduser = iduser;
     }
 
     public String getEmail() {

@@ -21,7 +21,11 @@ public class TicketService {
         return this.ticketRepo.findByType(type);
     }
 
-    public void save(Ticket ticket){
+    public void save(Ticket ticket) {
         this.ticketRepo.save(ticket);
+    }
+
+    public Optional<Ticket> findById(Long id) {
+        return this.ticketRepo.findById(id);
     }
 }

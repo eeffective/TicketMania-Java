@@ -1,5 +1,6 @@
 package TicketMania.Controllers;
 
+import TicketMania.Entities.MusicEvent;
 import TicketMania.Entities.Ticket;
 import TicketMania.Services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,16 +21,31 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/tickets")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Ticket> add(@RequestBody Ticket ticket) {
         try {
             ticketService.save(ticket);
-            return new ResponseEntity<>(ticket, HttpStatus.OK);
+            return new ResponseEntity<Ticket>(ticket, HttpStatus.OK);
         } catch (Exception ex) {
             ex.printStackTrace();
             throw ex;
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<Ticket> update(@RequestBody Ticket newTicket, @PathVariable Long id) {
+        return ticketService.findById(id)
+                .map(ticket -> {
+                    ticket = newTicket;
+                    ticketService.save(ticket);
+                    return new ResponseEntity<Ticket>(ticket, HttpStatus.OK);
+                })
+                .orElseGet(() -> {
+                    newTicket.setId(id);
+                    ticketService.save(newTicket);
+                    return new ResponseEntity<>(newTicket, HttpStatus.ACCEPTED);
+                });
+    }
 }

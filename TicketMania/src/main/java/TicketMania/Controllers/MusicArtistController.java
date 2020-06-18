@@ -7,6 +7,7 @@ import TicketMania.Services.MusicEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -38,6 +39,7 @@ public class MusicArtistController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(path = "/musicartists")
     public ResponseEntity<MusicArtist> add(@RequestBody MusicArtist musicArtist) {
         try {
